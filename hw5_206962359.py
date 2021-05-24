@@ -254,16 +254,13 @@ def find_optimal_angle(trees, alpha):
 		
 		if ((sorted_trees[i].theta < 0) and (sorted_trees[i].theta + alpha > 0)) \
  			or ((sorted_trees[i].theta > 0) and (sorted_trees[i].theta + alpha > 2*math.pi)):
-			print ("if")
 			counter += len(sorted_trees) - (i+1) # all trees that are larger than i
 			#binary search on the left side of the list
 			right = i-1
 			left = 0
 			counter += left_bsearch(left, right, sorted_trees, i, 0, alpha)
-			print ("counter:", counter)
 
 		else:
-			print ("else")
 			#binary search on the right side of the list
 			right = len(sorted_trees)-1
 			left = i+1
@@ -272,19 +269,18 @@ def find_optimal_angle(trees, alpha):
 		if counter > result[1]:
 			result = (sorted_trees[i].theta, counter)
 			
-	print ("number of covered trees:", result[1])
 	return result[0]
 
 # | -30 0 20 30 40 | (45) 50 60
 # 0:10 **i --> 1:20** 2:22 3:25 4:30 | 5:40 6:50 7:60
-p1 = Point(1,1)
+"""p1 = Point(1,1)
 p2 = Point(-1,1)
 
 p3 = Point(-1,-1)
 p4 = Point(1,-1)
 trees = [p3, p4]
 print  ("theta:", p3.theta)
-print  (find_optimal_angle(trees,math.pi/12))
+print  (find_optimal_angle(trees,math.pi/12))"""
 
 
 class Node:
@@ -385,9 +381,19 @@ class Linked_list:
 
 	# 3b_i
 	def split(self, k):
-		pass  # replace this with your code
+		lst1 = Linked_list()
+		lst1.len = k
+		lst1.head = self.head
+		node1 = lst1.head
+		for i in range (1,k):
+			node1 = node1.next
+		
+		lst2 = Linked_list()
+		lst2.len = len(self) - k
 
-
+		lst2.head = node1.next
+		node1.next = None
+		return (lst1,lst2)
 
 # 3b_ii
 def divide_route(cities, k):
@@ -591,17 +597,18 @@ def test():
 	if Point.angle_between_points(p1, p2) != 0.25 * math.pi or \
 	   Point.angle_between_points(p2, p1) != 1.75 * math.pi:
 		print("3a_i - error in angle_between_points")
-	print("hh")
 
 	trees = [Point(2, 1), Point(-1, 1), Point(-1, -1), Point(0, 3), Point(0, -5), Point(-1, 3)]
 	if find_optimal_angle(trees, 0.25 * math.pi) != 0.5 * math.pi:
 		print("3a_ii - error in find_optimal_angle")
-
+	
 	# 3b
 	lst = Linked_list("abcde")
 	lst1, lst2 = lst.split(2)
 	if lst1.len != 2 or lst2.len != 3 or lst1[1].value != "b" or lst2[0].value != "c":
 		print("3b_i - error in split")
+	
+	print("hheeelllooo")
 
 	cities = Linked_list([Point(0, 1), Point(0, 0), Point(3, 3), Point(-2, 3), Point(-2, -5), Point(-4, -5)])
 	trip = divide_route(cities, 10)
@@ -659,4 +666,4 @@ def test():
 	if not t1.is_min_heap():
 		print("4b - error in min_heap")
 
-#test()
+test()
