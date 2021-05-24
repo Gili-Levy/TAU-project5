@@ -18,6 +18,48 @@ SUBMISSION_IDS = []
 # QUESTION 2 #
 ##############
 
+def left_bsearch (left,right, sorted_trees, i, counter, alpha):
+	while left <= right:
+		mid = (left+right)//2
+		if Point.angle_between_points(sorted_trees[i], sorted_trees[mid]) == alpha or \
+			((Point.angle_between_points(sorted_trees[i], sorted_trees[mid]) < alpha) and
+			(Point.angle_between_points(sorted_trees[i], sorted_trees[mid+1]) > alpha)):
+
+			counter += mid+1
+			break
+		elif ((Point.angle_between_points(sorted_trees[i], sorted_trees[mid]) > alpha) and
+			(Point.angle_between_points(sorted_trees[i], sorted_trees[mid-1]) < alpha)):
+
+			counter += mid
+			break
+		elif (Point.angle_between_points(sorted_trees[i], sorted_trees[mid]) > alpha):
+			right = mid-1
+		elif (Point.angle_between_points(sorted_trees[i], sorted_trees[mid]) < alpha):
+			left = mid+1
+		
+	return counter
+
+def right_bsearch (left,right, sorted_trees, i, counter, alpha):
+	while left <= right:
+		mid = (left+right)//2
+		if Point.angle_between_points(sorted_trees[i], sorted_trees[mid]) == alpha or \
+			((Point.angle_between_points(sorted_trees[i], sorted_trees[mid]) < alpha) and
+			(Point.angle_between_points(sorted_trees[i], sorted_trees[mid+1]) > alpha)):
+
+			counter += mid-i # minus the left side of the list
+			break
+		elif ((Point.angle_between_points(sorted_trees[i], sorted_trees[mid]) > alpha) and
+			(Point.angle_between_points(sorted_trees[i], sorted_trees[mid-1]) < alpha)):
+			
+			counter += mid-1-i # minus the left side of the list
+			break
+		elif (Point.angle_between_points(sorted_trees[i], sorted_trees[mid]) > alpha):
+			right = mid-1
+		elif (Point.angle_between_points(sorted_trees[i], sorted_trees[mid]) < alpha):
+			left = mid+1
+		
+	return counter
+
 def merge(A, B):
 	""" merging two lists into a sorted list
 		A and B must be sorted! """
@@ -205,23 +247,45 @@ class Point:
 # 3a_ii
 def find_optimal_angle(trees, alpha):
 	sorted_trees = sorted(trees, key=lambda tree: tree.theta if tree.theta>=0 else tree.theta+2*math.pi) #complexity = O(nlogn)
-	tuple_result = (0,-1) # (angle, max trees count)
+	result = (0,-1) # (angle, max trees count)
 	
 	for i in range (len(sorted_trees)): #complexity = O(n)
-		counter = 0
-	# if self.theta + alpha > self.theta --> binary search on the right side of the list
-	# if self.theta + alpha < self.theta --> add trees count from the right side to the counter + binary search on the left side
+		counter = 1 # tree number i
+		
+		if ((sorted_trees[i].theta < 0) and (sorted_trees[i].theta + alpha > 0)) \
+ 			or ((sorted_trees[i].theta > 0) and (sorted_trees[i].theta + alpha > 2*math.pi)):
+			print ("if")
+			counter += len(sorted_trees) - (i+1) # all trees that are larger than i
+			#binary search on the left side of the list
+			right = i-1
+			left = 0
+			counter += left_bsearch(left, right, sorted_trees, i, 0, alpha)
+			print ("counter:", counter)
 
+		else:
+			print ("else")
+			#binary search on the right side of the list
+			right = len(sorted_trees)-1
+			left = i+1
+			counter += right_bsearch(left, right, sorted_trees, i, 0, alpha)
 
-	pass  # replace this with your code
+		if counter > result[1]:
+			result = (sorted_trees[i].theta, counter)
+			
+	print ("number of covered trees:", result[1])
+	return result[0]
 
+# | -30 0 20 30 40 | (45) 50 60
+# 0:10 **i --> 1:20** 2:22 3:25 4:30 | 5:40 6:50 7:60
 p1 = Point(1,1)
 p2 = Point(-1,1)
+
 p3 = Point(-1,-1)
-trees = [p3, p2,p1]
-print (trees)
-sorted_trees = sorted(trees, key=lambda tree: tree.theta if tree.theta>=0 else tree.theta+2*math.pi)
-print (sorted_trees)
+p4 = Point(1,-1)
+trees = [p3, p4]
+print  ("theta:", p3.theta)
+print  (find_optimal_angle(trees,math.pi/12))
+
 
 class Node:
 	def __init__(self, val):
