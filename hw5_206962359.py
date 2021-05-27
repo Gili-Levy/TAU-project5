@@ -398,33 +398,23 @@ class Linked_list:
 # 3b_ii
 def divide_route(cities, k):
 	result = []
-	print ("cities:", cities)
 	k_check = 0
 	visited_cities = 1
 	i = 0
 	while len(cities) >= 1:
 		if i == len(cities)-1:
-			print ("break")
 			result.append(cities)
 			break
-		print("point1: ", cities[i].value)
-		print("point1: ", cities[i].value, "Point 2:", cities[i].next.value)
 		dis = Point.distance(cities[i].value, (cities[i].next).value)
-		print ("k_check:", k_check, "dis:", dis)
 		if (k_check + dis <= k):
-			print ("if")
 			k_check += dis
 			visited_cities += 1
 			i += 1
 		else:
-			print ("else2")
-			print(visited_cities, len(cities))
 			temp_result, cities = Linked_list.split(cities,visited_cities)
-			print ("temp:", temp_result)
 			result.append(temp_result)
 			k_check, visited_cities, i = dis, 1, 0
 	
-	print ("result:", result)
 	return result
 
 
