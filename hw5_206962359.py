@@ -558,11 +558,43 @@ class Binary_search_tree():
 
 	# 4a
 	def diam(self):
-		pass  # replace this with your code
+		maximum, depth = 0, 0
+		return Binary_search_tree.diam_rec(self.root, maximum ,depth)[0]
+	
+	def diam_rec(self, maximum, depth):
+		if self == None:
+				return (0,0)
+		
+		left = Binary_search_tree.diam_rec(self.left, maximum, depth)
+		right = Binary_search_tree.diam_rec(self.right, maximum, depth)
+		middle = 1+left[1]+right[1]
+		
+		temp_max = max(right[0], left[0], middle)
+		if temp_max > maximum:
+			maximum = temp_max
+			
+		depth = 1 + max(left[1],right[1])
+		return (maximum,depth)
 
 	# 4b
 	def is_min_heap(self):
-		pass  # replace this with your code
+		return Binary_search_tree.is_min_heap2(self.root)
+
+	def is_min_heap2(self):
+		if self.left == None and self.right == None:
+			return True
+		
+		elif self.right == None:
+			current_check = self.val < self.left.val
+			return Binary_search_tree.is_min_heap2(self.left) and current_check
+
+		elif self.left == None:
+			current_check = self.val < self.right.val
+			return Binary_search_tree.is_min_heap2(self.right) and current_check
+
+		else:
+			current_check = (self.val < self.right.val) and (self.val < self.left.val)
+			return Binary_search_tree.is_min_heap2(self.left) and Binary_search_tree.is_min_heap2(self.right) and current_check
 
 
 ##########
@@ -629,15 +661,9 @@ def test():
 
 	cities = Linked_list([Point(0, 1), Point(0, 0), Point(3, 3), Point(-2, 3), Point(-2, -5), Point(-4, -5)])
 	trip = divide_route(cities, 10)
-	#if len(trip) != 3 or trip[0][0].value != Point(0, 1) or trip[2][1].value != Point(-4, -5):
-	#	print("3b_ii - error in divide_route")
-	if len(trip) != 3 or trip[0][0].value != Point(0, 1):
-		print("111 - 3b_ii - error in divide_route")
-	print ("perfect")
-	if trip[2][1].value != Point(-4, -5):
-		print("222- 3b_ii - error in divide_route")
+	if len(trip) != 3 or trip[0][0].value != Point(0, 1) or trip[2][1].value != Point(-4, -5):
+		print("3b_ii - error in divide_route")
 
-	print("hheeelllooo")
 
 	##############
 	# QUESTION 4 #
@@ -656,7 +682,7 @@ def test():
 	t2.insert('h', 10)
 	if t2.diam() != 6:
 		print("4a - error in diam")
-
+	
 	t3 = Binary_search_tree()
 	t3.insert('c', 1)
 	t3.insert('g', 3)
@@ -667,6 +693,7 @@ def test():
 	t3.insert('z', 6)
 	if t3.diam() != 5:
 		print("4a - error in diam")
+
 
 	# 4b
 	""" Construct below binary tree
@@ -689,5 +716,7 @@ def test():
 
 	if not t1.is_min_heap():
 		print("4b - error in min_heap")
+	
+	print("hheeelllooo")
 
 test()
