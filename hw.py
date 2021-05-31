@@ -11,7 +11,7 @@ import math
 
 # Enter all IDs of participating students as strings, separated by commas.
 # For example: SUBMISSION_IDS = ["123456", "987654"] if submitted in a pair or SUBMISSION_IDS = ["123456"] if submitted alone.
-SUBMISSION_IDS = []
+SUBMISSION_IDS = ["316296771", "206962359"]
 
 
 ##############
@@ -100,20 +100,6 @@ class FactoredInteger:
 				gcd_lst.pop(0)
 
 		return FactoredInteger(merged_lst)
-
-
-"""n1 = FactoredInteger([2, 3])		# n1.number = 6
-n2 = FactoredInteger([2, 5])		# n2.number = 10
-n3 = FactoredInteger([2, 2, 3, 5])  # n3.number = 60
-print (str(n3))
-if str(n3) != "<60:2,2,3,5>":
-	print("2b - error in __repr__")
-else:
-	print ("awesome")
-if n1 != FactoredInteger([2, 3]):
-	print("2b - error in __eq__")
-else:
-	print ("awesome")"""
 
 
 ##############
@@ -516,5 +502,3 @@ def test():
 
 	if not t1.is_min_heap():
 		print("4b - error in min_heap")
-
-test()
