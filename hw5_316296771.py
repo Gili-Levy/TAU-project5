@@ -11,7 +11,7 @@ import math
 
 # Enter all IDs of participating students as strings, separated by commas.
 # For example: SUBMISSION_IDS = ["123456", "987654"] if submitted in a pair or SUBMISSION_IDS = ["123456"] if submitted alone.
-SUBMISSION_IDS = []
+SUBMISSION_IDS = ["316296771","206962359"]
 
 
 ##############
@@ -270,17 +270,6 @@ def find_optimal_angle(trees, alpha):
 			result = (sorted_trees[i].theta, counter)
 			
 	return result[0]
-
-# | -30 0 20 30 40 | (45) 50 60
-# 0:10 **i --> 1:20** 2:22 3:25 4:30 | 5:40 6:50 7:60
-"""p1 = Point(1,1)
-p2 = Point(-1,1)
-
-p3 = Point(-1,-1)
-p4 = Point(1,-1)
-trees = [p3, p4]
-print  ("theta:", p3.theta)
-print  (find_optimal_angle(trees,math.pi/12))"""
 
 
 class Node:
@@ -717,6 +706,3 @@ def test():
 	if not t1.is_min_heap():
 		print("4b - error in min_heap")
 	
-	print("hheeelllooo")
-
-test()
